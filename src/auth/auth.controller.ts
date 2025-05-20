@@ -11,6 +11,7 @@ import {
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { Public } from 'src/utils/public.decorator';
+import { LocalAuthGuard } from './local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -19,12 +20,18 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.username, signInDto.password);
+    return this.authService.logIn(signInDto.email, signInDto.password);
   }
 
-  @Public()
-  @UseGuards(AuthGuard)
+  @UseGuards(LocalAuthGuard)
+  @Post('login/passport')
+  async login(@Request() req) {
+    return this.authService.login(req.user)
+  }
+
+  // @Public()  
   @Get('profile')
+  @UseGuards(AuthGuard)
   getProfile(@Request() req) {
     return req.user;
   }
