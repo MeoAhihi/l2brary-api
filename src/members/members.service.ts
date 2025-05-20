@@ -1,31 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Member } from './schemas/member.schema';
+import { Model } from 'mongoose';
 import { CreateMemberDto } from './dto/create-member.dto';
+import { Member } from './schemas/member.schema';
 @Injectable()
 export class MembersService {
   constructor(@InjectModel(Member.name) private memberModel: Model<Member>) {}
-
-  private readonly users = [
-    {
-      _id: 1,
-      email: 'john',
-      password: 'changeme',
-    },
-    {
-      _id: 2,
-      email: 'maria',
-      password: 'guess',
-    },
-  ];
-
+  
   async findOne(email: string): Promise<any | undefined> {
-    return this.users.find(user => user.email === email);
+    return await this.memberModel.findOne({ email }).exec() as Member;
   }
-  // async findOne(email: string): Promise<any | undefined> {
-  //   return this.memberModel.findOne({ email }).exec();
-  // }
 
   async findAll(): Promise<Member[]> {
     return this.memberModel.find().exec();
@@ -34,5 +18,9 @@ export class MembersService {
   async create(createMemberDto: CreateMemberDto): Promise<Member> {
     const newMember = new this.memberModel(createMemberDto);
     return newMember.save();
+  }
+
+  async findByEmail(email: string): Promise<Member> {
+    return await this.memberModel.findOne({ email }).exec() as Member;
   }
 }
