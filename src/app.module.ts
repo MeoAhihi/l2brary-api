@@ -4,10 +4,21 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { MembersModule } from './members/members.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { Connection } from 'mongoose';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGODB_URI as string),
+    MongooseModule.forRoot(process.env.MONGODB_URI as string, {
+      onConnectionCreate: (connection: Connection) => {
+        connection.on('connected', () => console.log('connected'));
+        connection.on('open', () => console.log('open'));
+        connection.on('disconnected', () => console.log('disconnected'));
+        connection.on('reconnected', () => console.log('reconnected'));
+        connection.on('disconnecting', () => console.log('disconnecting'));
+
+        return connection;
+      },
+    }),
     AuthModule,
     MembersModule,
   ],
