@@ -8,14 +8,25 @@ export class MembersController {
   constructor(private memberService: MembersService) {}
 
   @UseGuards(JwtAuthGuard)
+  @Get()
+  findAll(): Promise<Object> {
+    return this.memberService.findAll();
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req: RequestType) {
     return req.user;
   }
 
-  @Get()
-  findAll(): Promise<Object> {
-    return this.memberService.findAll();
+  @Get('birthdays')
+  getBirthdays() {
+    return this.memberService.findAllMonthOfBirth();
+  }
+
+  @Get(':id')
+  getById(@Request() req: RequestType) {
+    return this.memberService.findById(req.params.id);
   }
 
   @Get('email/:email')

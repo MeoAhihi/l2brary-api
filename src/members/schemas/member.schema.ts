@@ -15,13 +15,13 @@ export class Member {
   birthday: Date;
 
   @Prop()
-  isMale: boolean;
+  is_male: boolean;
 
   @Prop()
-  schoolClass: string;
+  school_class: string;
 
   @Prop()
-  phoneNumber: string;
+  phone_number: string;
 
   @Prop()
   email: string;
