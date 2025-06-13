@@ -1,8 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { MembersService } from 'src/members/members.service';
 import { JwtService } from '@nestjs/jwt';
-import { RegisterDto } from './dto/register.dto';
-import { UserMemberDto } from 'src/members/dto/user-member.dto';
+import { MembersService } from 'src/members/members.service';
+import { Member } from 'src/members/schemas/member.schema';
 
 @Injectable()
 export class AuthService {
@@ -27,8 +26,10 @@ export class AuthService {
     };
   }
 
-  async register(data: UserMemberDto) {
-    const duplicateEmailMember = await this.membersService.findByEmail(data.email);
+  async register(data: Member) {
+    const duplicateEmailMember = await this.membersService.findByEmail(
+      data.email,
+    );
     if (duplicateEmailMember) {
       throw new UnauthorizedException('Email already exists');
     }
