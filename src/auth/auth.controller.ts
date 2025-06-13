@@ -1,14 +1,12 @@
 import {
   Body,
   Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
   Post,
   Request,
-  UseGuards,
+  UseGuards
 } from '@nestjs/common';
-import { AuthGuard } from './auth.guard';
+import { Request as RequestType } from 'express';
+import { UserMemberDto } from 'src/members/dto/user-member.dto';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local-auth.guard';
 
@@ -16,22 +14,22 @@ import { LocalAuthGuard } from './local-auth.guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @HttpCode(HttpStatus.OK)
-  @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.logIn(signInDto.email, signInDto.password);
-  }
-
   @UseGuards(LocalAuthGuard)
-  @Post('login/passport')
-  async login(@Request() req) {
-    return this.authService.login(req.user)
+  @Post('login')
+  async login(@Request() req: RequestType): Promise<{ access_token: string }> {
+    return this.authService.login(req.user);
   }
 
-  // @Public()  
-  @Get('profile')
-  @UseGuards(AuthGuard)
-  getProfile(@Request() req) {
-    return req.user;
+  @Post('register')
+  async register(
+    @Body() body: UserMemberDto,
+  ): Promise<{ access_token: string }> {
+    //register new member
+    const newMember = await this.authService.register(body);
+
+    //send email to new member
+
+    //login new member
+    return this.authService.login(newMember);
   }
 }

@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UserMemberDto } from './dto/user-member.dto';
 import { Member } from './schemas/member.schema';
-import { AdminMemberDto } from './dto/admin-member.dto';
-import { UpdateAchievementDto } from './dto/update-achievement.dto';
 @Injectable()
 export class MembersService {
   constructor(@InjectModel(Member.name) private memberModel: Model<Member>) {}
@@ -16,7 +13,9 @@ export class MembersService {
   async findAll(): Promise<Member[]> {
     return this.memberModel
       .find()
-      .select('fullname is_male school_class role avatar_url')
+      .select(
+        'fullname international_name is_male role birthday phone_number email',
+      )
       .exec();
   }
   async findById(id: string): Promise<Member> {
@@ -63,25 +62,20 @@ export class MembersService {
     ]);
   }
 
-  async create(
-    createMemberDto: UserMemberDto | AdminMemberDto,
-  ): Promise<Member> {
-    const newMember = new this.memberModel(createMemberDto);
+  async create(memberData: Member): Promise<Member> {
+    const newMember = new this.memberModel(memberData);
     return newMember.save();
   }
 
-  async updateInformation(
-    id: string,
-    updateMemberDto: UserMemberDto | AdminMemberDto,
-  ): Promise<Member> {
+  async updateInformation(id: string, memberData: Member): Promise<Member> {
     return (await this.memberModel
-      .findByIdAndUpdate(id, updateMemberDto, { new: true })
+      .findByIdAndUpdate(id, memberData, { new: true })
       .exec()) as Member;
   }
 
   async updateAchievements(
     id: string,
-    achievements: UpdateAchievementDto[],
+    achievements: Member[],
   ): Promise<Member> {
     return (await this.memberModel
       .findByIdAndUpdate(id, { achievements }, { new: true })

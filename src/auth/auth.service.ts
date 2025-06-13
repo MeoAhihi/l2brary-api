@@ -1,6 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { MembersService } from 'src/members/members.service';
 import { JwtService } from '@nestjs/jwt';
+import { RegisterDto } from './dto/register.dto';
+import { UserMemberDto } from 'src/members/dto/user-member.dto';
 
 @Injectable()
 export class AuthService {
@@ -18,31 +20,19 @@ export class AuthService {
     return null;
   }
 
-  async login(member: any) {
+  async login(member: any): Promise<{ access_token: string }> {
     const payload = { email: member.email, sub: member._id };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
 
-  async logIn(email: string, pass: string): Promise<{ access_token: string }> {
-    const member = await this.membersService.findOne(email);
-    if (!member || member?.password !== pass) {
-      throw new UnauthorizedException();
+  async register(data: UserMemberDto) {
+    const duplicateEmailMember = await this.membersService.findByEmail(data.email);
+    if (duplicateEmailMember) {
+      throw new UnauthorizedException('Email already exists');
     }
-
-    const payload = { sub: member._id, email: member.email };
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
-  }
-
-  async validateUser(email: string, pass: string) {
-    const member = await this.membersService.findOne(email);
-    if (member && member.password === pass) {
-      const { password, ...result } = member;
-      return result;
-    }
-    return null;
+    const member = await this.membersService.create(data);
+    return member;
   }
 }
