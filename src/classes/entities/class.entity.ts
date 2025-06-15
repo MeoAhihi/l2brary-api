@@ -1,30 +1,34 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, ObjectId } from 'mongoose';
+import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
+import { ClassGroup } from '../../class-groups/entities/class_group.entity';
 
 export type ClassDocument = HydratedDocument<Class>;
 
 @Schema({ timestamps: true })
 export class Class {
-  @Prop({ required: true })
+  @Prop({ required: true, trim: true })
   name: string;
 
-  @Prop()
-  day: string;
+  @Prop({
+    type: String,
+    enum: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+  })
+  day: 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
 
-  @Prop()
-  frequency: string;
+  @Prop({
+    type: String,
+    enum: ['weekly', 'monthly', 'op2w', 'oddWk', 'evenWk'],
+  })
+  frequency: 'weekly' | 'monthly' | 'op2w' | 'oddWk' | 'evenWk';
 
-  @Prop()
+  @Prop({ match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/ })
   start_time: string;
 
-  @Prop()
+  @Prop({ match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/ })
   end_time: string;
 
-  @Prop()
-  class_group: {
-    class_group_id: ObjectId;
-    name: string;
-  };
+  @Prop({ type: mongoose.Types.ObjectId, ref: 'ClassGroup' })
+  class_group: ClassGroup;
 
   @Prop()
   class_members: {
