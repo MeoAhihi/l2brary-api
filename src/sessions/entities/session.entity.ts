@@ -1,6 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, ObjectId } from 'mongoose';
 
+export interface Attendance {
+  member_id: ObjectId;
+  fullname: string;
+  joined_at: Date;
+}
+
+export interface QuizComplete {
+  member_id: ObjectId;
+  score: number;
+}
+
 export type SessionDocument = HydratedDocument<Session>;
 
 @Schema()
@@ -35,18 +46,11 @@ export class Session {
   @Prop()
   smile_score: number;
 
-  @Prop()
-  attendances: {
-    member_id: ObjectId;
-    fullname: string;
-    joined_at: Date;
-  }[];
+  @Prop({ type: Array<Attendance> })
+  attendances: Attendance[];
 
-  @Prop()
-  quiz_completes: {
-    member_id: ObjectId;
-    score: number;
-  }[];
+  @Prop({ type: Array<QuizComplete> })
+  quiz_completes: QuizComplete[];
 }
 
 export const SessionSchema = SchemaFactory.createForClass(Session);

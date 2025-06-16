@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import { ClassesModule } from './classes/classes.module';
 import { ClassGroupsModule } from './class-groups/class-groups.module';
+import { SessionsModule } from './sessions/sessions.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ClassGroupsModule } from './class-groups/class-groups.module';
     MembersModule,
     ClassesModule,
     ClassGroupsModule,
+    SessionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
