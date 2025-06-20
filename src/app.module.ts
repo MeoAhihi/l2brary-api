@@ -8,6 +8,7 @@ import { Connection } from 'mongoose';
 import { ClassesModule } from './classes/classes.module';
 import { ClassGroupsModule } from './class-groups/class-groups.module';
 import { SessionsModule } from './sessions/sessions.module';
+import { ScoreColumnsModule } from './score_columns/score_columns.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { SessionsModule } from './sessions/sessions.module';
     ClassesModule,
     ClassGroupsModule,
     SessionsModule,
+    ScoreColumnsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
