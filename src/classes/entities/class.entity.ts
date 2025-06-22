@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
+import mongoose, { HydratedDocument, ObjectId, Query } from 'mongoose';
 import { ClassGroup } from '../../class-groups/entities/class_group.entity';
 
 export type ClassDocument = HydratedDocument<Class>;
@@ -22,10 +22,10 @@ export class Class {
   frequency: 'weekly' | 'monthly' | 'op2w' | 'oddWk' | 'evenWk';
 
   @Prop({ match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/ })
-  start_time: string;
+  start_at: string;
 
   @Prop({ match: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/ })
-  end_time: string;
+  end_at: string;
 
   @Prop({ type: mongoose.Types.ObjectId, ref: 'ClassGroup' })
   class_group: ClassGroup;
@@ -36,6 +36,22 @@ export class Class {
     group: string;
     position: string;
   }[];
+
+  @Prop()
+  avatar_url: string;
+
+  @Prop()
+  message_group_url: string;
+
+  @Prop()
+  deleted_at: Date;
 }
 
-export const ClassSchema = SchemaFactory.createForClass(Class);
+const ClassSchema = SchemaFactory.createForClass(Class);
+
+ClassSchema.pre<Query<any, any>>(/^find/, function (next) {
+  this.where({ deleted_at: null });
+  next();
+});
+
+export { ClassSchema };
