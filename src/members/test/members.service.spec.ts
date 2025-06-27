@@ -34,7 +34,9 @@ describe('MembersService', () => {
     create: jest.fn().mockReturnValue({ exec: jest.fn() }),
     findByIdAndUpdate: jest.fn().mockReturnValue({ exec: jest.fn() }),
     findByIdAndDelete: jest.fn().mockReturnValue({ exec: jest.fn() }),
+    
   };
+
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
