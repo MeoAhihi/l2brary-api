@@ -1,4 +1,4 @@
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Request, UseGuards } from '@nestjs/common';
 import { Request as RequestType } from 'express';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { MembersService } from './members.service';
@@ -25,12 +25,12 @@ export class MembersController {
   }
 
   @Get(':id')
-  getById(@Request() req: RequestType) {
-    return this.memberService.findById(req.params.id);
+  getById(@Param('id') id: string) {
+    return this.memberService.findById(id);
   }
 
   @Get('email/:email')
-  findByEmail(@Request() req: RequestType): Promise<Object> {
-    return this.memberService.findByEmail(req.params.email);
+  findByEmail(@Param('email') email: string): Promise<Object> {
+    return this.memberService.findByEmail(email);
   }
 }
