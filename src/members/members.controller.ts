@@ -26,7 +26,7 @@ export class MembersController {
 
   @Get(':id')
   getById(@Param('id') id: string) {
-    return this.memberService.findById(id);
+    return this.memberService.findOne(id);
   }
 
   @Get('email/:email')

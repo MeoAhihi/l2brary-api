@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { MembersController } from '../members.controller';
 import { MembersService } from '../members.service';
 import { CreateMemberDto } from '../dto/create-member.dto';
-import { UpdateMemberDto } from '../dto/update-member.dto';
 
 const memberMockData: CreateMemberDto = {
   fullName: 'John Doe',
@@ -76,7 +75,7 @@ describe('MembersController', () => {
       jest.spyOn(service, 'findOne').mockResolvedValue(expectedResult);
 
       expect(await controller.getById('1')).toBe(expectedResult);
-      expect(service.findOne).toHaveBeenCalledWith(1);
+      expect(service.findOne).toHaveBeenCalledWith('1');
     });
   });
 
