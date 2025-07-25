@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { MembersModule } from './modules/members/members.module';
 import { MemberProfileModule } from './member-profile/member-profile.module';
 import { GroupRoleManagementModule } from './group-role-management/group-role-management.module';
+import { EngagementTrackingModule } from './modules/engagement-tracking/engagement-tracking.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { GroupRoleManagementModule } from './group-role-management/group-role-ma
     MembersModule,
     MemberProfileModule,
     GroupRoleManagementModule,
+    EngagementTrackingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
