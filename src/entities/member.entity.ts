@@ -22,7 +22,7 @@ export class Member {
   fullName: string;
 
   @Column()
-  internationName: string;
+  internationalName: string;
 
   @Column({ unique: true })
   email: string;
