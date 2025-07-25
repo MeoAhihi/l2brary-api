@@ -3,6 +3,8 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { logger } from './common/middleware/logger/logger.middleware';
+import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +19,7 @@ async function bootstrap() {
   );
 
   app.use(logger);
+  app.useGlobalFilters(new GlobalExceptionFilter(), new HttpExceptionFilter());
 
   const config = new DocumentBuilder()
     .setTitle('L2BRARY API')
