@@ -6,6 +6,7 @@ import { MembersModule } from './modules/members/members.module';
 import { MemberProfileModule } from './member-profile/member-profile.module';
 import { GroupRoleManagementModule } from './group-role-management/group-role-management.module';
 import { EngagementTrackingModule } from './modules/engagement-tracking/engagement-tracking.module';
+import { CommunicationHubModule } from './modules/communication-hub/communication-hub.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { EngagementTrackingModule } from './modules/engagement-tracking/engageme
     MemberProfileModule,
     GroupRoleManagementModule,
     EngagementTrackingModule,
+    CommunicationHubModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    style
+      include ./style.css
+  body
+    h2 Reminder: Your class is tomorrow!
+    p Hi #{name},
+    p This is a reminder that your class, <strong>#{className}</strong>, is scheduled for tomorrow at <strong>#{classTime}</strong>.
+    p
+      | Don't forget to join the discussion on Zalo!
+      br
+      a(href=zaloLink) Discuss on Zalo
+    p See you there!
